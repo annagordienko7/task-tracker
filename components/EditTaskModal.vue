@@ -1,31 +1,34 @@
 <template>
     <div v-if="localShow" class="modal">
       <div class="modal-content">
-        <h2>Редактировать задачу</h2>
-        <form @submit.prevent="saveTask">
-          <div>
-            <label>Название:</label>
-            <input v-model="editedTask.title" required />
-          </div>
-          <div>
-            <label>Описание:</label>
-            <textarea v-model="editedTask.description"></textarea>
-          </div>
-          <div>
-            <label>Исполнитель:</label>
-            <input v-model="editedTask.assignee" />
-          </div>
-          <div>
-            <label>Приоритет:</label>
-            <select v-model="editedTask.priority">
-              <option>Low</option>
-              <option>Medium</option>
-              <option>High</option>
-            </select>
-          </div>
-          <button type="submit">Сохранить</button>
-          <button type="button" @click="cancelEdit">Отмена</button>
-        </form>
+        <h2>Edit Task</h2>
+
+        <el-form @submit.prevent="saveTask">
+    <el-form-item label="Title" required>
+      <el-input v-model="editedTask.title" />
+    </el-form-item>
+    
+    <el-form-item label="Description">
+      <el-input type="textarea" v-model="editedTask.description" />
+    </el-form-item>
+
+    <el-form-item label="Assignee">
+      <el-input v-model="editedTask.assignee" />
+    </el-form-item>
+
+    <el-form-item label="Priority">
+      <el-select v-model="editedTask.priority">
+        <el-option label="Low" value="Low" />
+        <el-option label="Medium" value="Medium" />
+        <el-option label="High" value="High" />
+      </el-select>
+    </el-form-item>
+
+    <el-form-item>
+      <el-button type="primary" @click="saveTask">Save</el-button>
+      <el-button @click="cancelEdit">Cancel</el-button>
+    </el-form-item>
+  </el-form>
       </div>
     </div>
   </template>
@@ -33,6 +36,8 @@
   <script setup>
   import { ref, reactive, watch } from 'vue';
   import { useTaskStore } from '@/stores/tasks';
+  import { ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElButton, ElRow, ElCol } from 'element-plus';
+
   
   const props = defineProps({
     task: {

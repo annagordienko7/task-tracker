@@ -1,40 +1,43 @@
 <template>
   <div class="task-board">
-    <div
-      class="column"
-      v-for="status in statuses"
-      :key="status"
-      @dragover.prevent
-      @drop="(event) => handleDrop(status, event)" 
-    >
-      <h2>{{ status }}</h2>
-      <TaskCard
-        v-for="task in filteredTasks(status)"
-        :key="task.id"
-        :task="task"
-      />
-      <button @click="showCreateModal = true">Добавить задачу</button>
-      <CreateTaskModal :show="showCreateModal" @close="showCreateModal = false" />
-    </div>
+    <el-row :gutter="20">
+      <el-col class="grid-content ep-bg-purple" :span="8"
+        v-for="status in statuses"
+        :key="status"
+        @dragover.prevent
+        @drop="(event) => handleDrop(status, event)"
+      >
+        <el-card>
+          <h2>{{ status }}</h2>
+          <TaskCard
+            v-for="task in filteredTasks(status)"
+            :key="task.id"
+            :task="task"
+          />
+          <el-button type="primary" class="btn" @click="showCreateModal = true">Add task</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
 
+    <CreateTaskModal :show="showCreateModal" @close="showCreateModal = false" />
   </div>
 </template>
 
 <script setup>
 import { useTaskStore } from '@/stores/tasks';
 import TaskCard from '@/components/TaskCard.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import CreateTaskModal from '@/components/CreateTaskModal.vue';
+import { ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElButton, ElRow, ElCol } from 'element-plus';
 
-const taskStore1 = useTaskStore();
+
+const taskStore = useTaskStore();
 
 onMounted(() => {
-  taskStore1.init(); // Инициализируйте хранилище при загрузке компонента
+  taskStore.init(); // Инициализируйте хранилище при загрузке компонента
 });
 
 const showCreateModal = ref(false);
-
-const taskStore = useTaskStore();
 const statuses = ['TODO', 'In Progress', 'Done'];
 
 const filteredTasks = (status) => {
@@ -52,3 +55,14 @@ const handleDrop = (newStatus, event) => {
   }
 };
 </script>
+
+<style scoped>
+.task-board {
+  max-width: 1200px; /* или другое значение */
+  margin: 0 auto; /* центрирование */
+  .btn {
+    margin-top: 10px;
+  }
+}
+</style>
+

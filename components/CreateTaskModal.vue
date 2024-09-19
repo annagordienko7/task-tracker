@@ -2,38 +2,33 @@
     <div v-if="show" class="modal">
       <div class="modal-content">
         <h2>Создать задачу</h2>
-        <form @submit.prevent="createTask">
-          <div>
-            <label>Название:</label>
-            <input v-model="newTask.title" required />
-          </div>
-          <div>
-            <label>Описание:</label>
-            <textarea v-model="newTask.description"></textarea>
-          </div>
-          <div>
-            <label>Исполнитель:</label>
-            <input v-model="newTask.assignee" />
-          </div>
-          <div>
-            <label>Приоритет:</label>
-            <select v-model="newTask.priority">
-              <option>Low</option>
-              <option>Medium</option>
-              <option>High</option>
-            </select>
-          </div>
-          <div>
-            <label>Статус:</label>
-            <select v-model="newTask.status">
-              <option>TODO</option>
-              <option>In Progress</option>
-              <option>Done</option>
-            </select>
-          </div>
-          <button type="submit">Создать</button>
-          <button type="button" @click="cancelCreate">Отмена</button>
-        </form>
+        <el-form @submit.prevent="createTask">
+    <el-form-item label="Title" required>
+      <el-input v-model="newTask.title" />
+    </el-form-item>
+    <el-form-item label="Description">
+      <el-input type="textarea" v-model="newTask.description" />
+    </el-form-item>
+    <el-form-item label="Assignee">
+      <el-input v-model="newTask.assignee" />
+    </el-form-item>
+    <el-form-item label="Priority">
+      <el-select v-model="newTask.priority">
+        <el-option label="Low" value="Low" />
+        <el-option label="Medium" value="Medium" />
+        <el-option label="High" value="High" />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="Status">
+      <el-select v-model="newTask.status">
+        <el-option label="TODO" value="TODO" />
+        <el-option label="In Progress" value="In Progress" />
+        <el-option label="Done" value="Done" />
+      </el-select>
+    </el-form-item>
+    <el-button type="primary" @click="createTask">Create</el-button>
+    <el-button @click="cancelCreate">Cancel</el-button>
+  </el-form>
       </div>
     </div>
   </template>
@@ -41,6 +36,8 @@
   <script setup>
   import { ref } from 'vue';
   import { useTaskStore } from '@/stores/tasks';
+  import { ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElButton, ElRow, ElCol } from 'element-plus';
+
   
   const props = defineProps({
     show: {
