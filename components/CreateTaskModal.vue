@@ -67,7 +67,6 @@
   emit('close');
 };
 
-  
   const cancelCreate = () => {
     emit('close'); // Закрыть модальное окно без создания
   };
