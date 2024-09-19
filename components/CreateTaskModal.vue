@@ -1,7 +1,7 @@
 <template>
     <div v-if="show" class="modal">
       <div class="modal-content">
-        <h2>Создать задачу</h2>
+        <h2>Create Task</h2>
         <el-form @submit.prevent="createTask">
     <el-form-item label="Title" required>
       <el-input v-model="newTask.title" />
@@ -62,10 +62,11 @@
   const generateId = () => Date.now(); // Простая реализация, генерирующая ID на основе текущего времени
   
   const createTask = () => {
-    newTask.value.id = generateId(); // Установите уникальный ID
-    taskStore.addTask(newTask.value);
-    emit('close'); // Закрыть модальное окно после создания
-  };
+  const taskToAdd = { ...newTask.value, id: generateId() }; // Создаем новый объект задачи
+  taskStore.addTask(taskToAdd);
+  emit('close');
+};
+
   
   const cancelCreate = () => {
     emit('close'); // Закрыть модальное окно без создания
